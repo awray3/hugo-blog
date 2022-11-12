@@ -3,7 +3,7 @@ title: "Beginning of My Blog"
 date: 2021-11-14
 modified: 2021-12-06
 summary: Welcome to the blog! I'm glad you're here.
-draft: true
+draft: false
 ---
 
 Welcome to my blog! I'm new to writing blog posts, and I'm glad you're here to
