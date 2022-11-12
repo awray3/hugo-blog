@@ -1,6 +1,102 @@
-baseURL = 'awray3.github.io'
-languageCode = 'en-us'
+theme="blackburn"
+baseurl = "awray3.github.io/" # Make sure to end baseurl with a '/'
 title = "awray's blog"
+author = "Andrew Wray"
+# Shown in the side menu
+copyright = "&copy; 2022. All rights reserved."
+canonifyurls = true
+paginate = 10
 
-[[module.imports]]
-path = "github.com/bep/docuapi"
+[indexes]
+  tag = "tags"
+  topic = "topics"
+
+[params]
+  # Shown in the home page
+  subtitle = ""
+#   brand = ""
+#   googleAnalytics = ""
+#   disqus = "Your Disqus shortname"
+  # CSS name for highlight.js
+  highlightjs = "androidstudio"
+  highlightjs_extra_languages = ["yaml"]
+  # dateFormat = "02 Jan 2006 , 15:04"
+  dateFormat = "02 Jan 2006"
+  # Include any custom CSS and/or JS files
+  # (relative to /static folder)
+#   custom_css = ["css/my.css"]
+#   custom_js = ["js/my.js"]
+
+[menu]
+  # Shown in the side menu.
+  [[menu.main]]
+    name = "Home"
+    pre = "<i class='fa fa-home fa-fw'></i>"
+    weight = 1
+    identifier = "home"
+    url = "/"
+  [[menu.main]]
+    name = "Posts"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 2
+    identifier = "post"
+    url = "/post/"
+  [[menu.main]]
+    name = "About"
+    pre = "<i class='fa fa-user fa-fw'></i>"
+    weight = 3
+    identifier = "about"
+    url = "/about/"
+  [[menu.main]]
+    name = "Research"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 4
+    url = "/research/"
+
+[social]
+  # Link your social networking accounts to the side menu
+  # by entering your username or ID.
+
+  # SNS microblogging
+#   twitter = "*"
+#   gnusocial = "*" # Specify href (e.g. https://quitter.se/yourusername)
+#   facebook = "*"
+#   googleplus = "*"
+#   weibo = "*"
+#   tumblr = "*"
+
+  # SNS photo/video sharing
+#   instagram = "*"
+#   flickr = "*"
+#   photo500px = "*"
+#   pinterest = "*"
+#   youtube = "*"
+#   vimeo = "*"
+#   vine = "*"
+#   slideshare = "*"
+
+  # SNS career oriented
+  linkedin = "andrew-wray3"
+#   xing = "*"
+
+  # SNS news
+#   reddit = "*"
+#   hackernews = "*"
+
+  # Techie
+  github = "awray3"
+#   gitlab = "*"
+#   bitbucket = "*"
+#   stackoverflow = ""
+#   serverfault = "*"
+
+  # Gaming
+#   steam = "*"
+#   mobygames = "*"
+
+  # Music
+#   lastfm = "*"
+#   discogs = "*"
+
+  # Other
+#   keybase = "*"
