@@ -7,15 +7,17 @@ description = "Research Papers"
 
 ## In Mathematics
 
-* [Moduli Spaces of Twisted Hermite-Einstein Connections on K3 Surfaces.](/Wray_dissertation_final.pdf)
-	My PhD thesis under the supervision of [Nick Addington](https://pages.uoregon.edu/adding/).
-* [Twisted Fourier-Mukai partners of Enriques surfaces.](https://arxiv.org/abs/1803.03250)
-	With Nick Addington. Appears in *Math. Z.* **297,** 2021.
+* [Moduli Spaces of Twisted Hermite-Einstein Connections on K3 Surfaces.][thesis]
+	My PhD thesis under the supervision of Nick Addington.
+* [Twisted Fourier-Mukai partners of Enriques surfaces.][enriques_surfaces_paper_official]
+	With Nick Addington. Appears in *Math. Z.* **297,** 2021. [(Arxiv Link)][enriques_surfaces_paper_arxiv]
 
 ## In Physics
 
-* [Hyperspherical approach to a three-boson problem in two dimensions with a magnetic field.](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.93.012511)
-	With Seth Rittenhouse and B.L. Johnson. Appears in *Phys. Rev. A* **93**, 2016
+* [Hyperspherical approach to a three-boson problem in two dimensions with a magnetic field][physics_paper].
+ With Seth Rittenhouse and B.L. Johnson. Appears in *Phys. Rev. A* **93**, 2016.
 
-
-
+[thesis]: /Wray_dissertation_final.pdf
+[enriques_surfaces_paper_official]: https://link.springer.com/article/10.1007/s00209-020-02555-z
+[enriques_surfaces_paper_arxiv]: https://arxiv.org/abs/1803.03250
+[physics_paper]: https://journals.aps.org/pra/abstract/10.1103/PhysRevA.93.012511

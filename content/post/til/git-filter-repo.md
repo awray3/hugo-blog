@@ -14,13 +14,13 @@ So let's say in a haste one day, you committed some `.csv` files to your git his
 
 ## The old way: `git filter-branch`
 
-When you search this question on google, you'll find a lot of older stack-exchange posts and tutorial websites with solutions involving `git filter-branch`. However, according to the git filter-repo [readme](https://github.com/newren/git-filter-repo#why-filter-repo-instead-of-other-alternatives), `filter-branch` has numerous problems: it is slow, potentially unsafe for your repository, and clunky to use.
+When you search this question on google, you'll find a lot of older stack-exchange posts and tutorial websites with solutions involving `git filter-branch`. However, according to the git filter-repo [readme][filter_repo_github_subsec], `filter-branch` has numerous problems: it is slow, potentially unsafe for your repository, and clunky to use.
 
 
 ## Enter `git filter-repo`
 
-People have since built other tools for performing git history manipulations, but the best one I've found is [`git filter-repo`](https://github.com/newren/git-filter-repo). Why this one? See the comparisons [here](https://github.com/newren/git-filter-repo#why-filter-repo-instead-of-other-alternatives); they convinced me.
-They also cover many use cases in their [handbook](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html), but I'll just cover the two that I learned about.
+People have since built other tools for performing git history manipulations, but the best one I've found is [`git filter-repo`][github]. Why this one? See the comparisons [here][filter_repo_github_subsec]; they convinced me.
+They also cover many use cases in their [handbook][manpage], but I'll just cover the main use case of removing a file from history.
 
 
 ## Migrating or removing files from the git history
@@ -102,3 +102,6 @@ A       bar/baz_2.txt
 A       file_1.txt
 ```
 
+[filter_repo_github]: https://github.com/newren/git-filter-repo
+[filter_repo_github_subsec]: https://github.com/newren/git-filter-repo#why-filter-repo-instead-of-other-alternatives
+[manpage]: https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html
