@@ -1,33 +1,39 @@
 ---
-title: "TIL: Cleaning git histories with git filter-repo"
+title: "How to Alter Git Histories"
 date: 2022-11-12T16:36:25-08:00
 draft: true
 tags:
     - git
+    - TIL
+description: Remove files from your git history with git-filter-repo
 ---
 
-I recently had to clean some git repos that had large data files committed early in their history.
-(You shouldn't commit data files to git for several reasons, mainly speed of indexing and Github filesize limits.
-This is better handled by a tool like DVC or git large-file storage.)
+I recently cleaned a couple of git repos that had large data files committed early in their history, and in the process I learned about [git-filter-repo][filter_repo_github], a tool for cleanly altering git histories.
 
-So let's say in a haste one day, you committed some `.csv` files to your git history to track the state of the data along with the code. After a few months of doing more and more analysis, you might have lots of such data files and other stuff in your git history (I'm looking at you, `__pycache__` and `.DS_Store`). So what can you do to remove these meaningless files from your git history?
+There are many reasons you might need to modify your git history. For example, consider a local repo you want to push to Github that at some point in time had a file larger than [their 100MB cap][github_filesize_caps] committed. 
+In order to push to Github, you would need to not only remove the file from your repo with `git rm`, but also remove the file from _any commit_ it showed up in.
+Another common scenario: you want to purge your git history of any accidentally tracked junk files, such as `__paycache__` folders or `.DS_Store` files.
+
+In both scenarios, the goal becomes to completely rid a file (or directory) from the git history.
 
 ## The old way: `git filter-branch`
 
-When you search this question on google, you'll find a lot of older stack-exchange posts and tutorial websites with solutions involving `git filter-branch`. However, according to the git filter-repo [readme][filter_repo_github_subsec], `filter-branch` has numerous problems: it is slow, potentially unsafe for your repository, and clunky to use.
+When you search around for ideas on how to rid files from histories you might find a lot of older stack-exchange posts and tutorial websites with solutions involving `git filter-branch`. However, according to the git filter-repo [readme][filter_repo_github_subsec], `filter-branch` has numerous problems: it is slow, potentially unsafe for your repository, and clunky to use.
+For that reason I won't describe how to use it here.
 
 
 ## Enter `git filter-repo`
 
-People have since built other tools for performing git history manipulations, but the best one I've found is [`git filter-repo`][github]. Why this one? See the comparisons [here][filter_repo_github_subsec]; they convinced me.
-They also cover many use cases in their [handbook][manpage], but I'll just cover the main use case of removing a file from history.
+People have since built other tools for performing git history manipulations, and the best one I've found is [git-filter-repo][filter_repo_github]. I picked it after having been convinced by their [comparisons to other tools][filter_repo_github_subsec] this area.
+They cover many use cases in their [handbook][manpage], which is worth at least glancing over.
 
+## Example: Removing files from the git history
 
-## Migrating or removing files from the git history
+In this post I'll focus on the example of removing a file from the git history. However, this works the same with directories and similarly with glob patterns or regex; see `--path-glob` and `--path-regex`. 
 
 For illustration, I'll initialize an empty git repository and add two files, `file_1.txt` and `file_2.txt`, in a single commit.
 
-```bash
+```console
 $ mkdir /tmp/new-repo && cd /tmp/new-repo
 $ git init
 $ touch file_1.txt file_2.txt
@@ -35,7 +41,7 @@ $ git add .
 $ git commit -m "Initial commit"
 ```
 
-```bash
+```console
 $ git log --name-status --onleline
 
 8fe6ecb (HEAD -> main) Initial commit
@@ -49,59 +55,64 @@ For this example our plan will be to delete `file_2.txt` from the git history _w
 
 "Decaching" is a word I made up for this step of "remove the file from the current git commit but keep it around in the folder." You can do this with
 
-```bash
+```console
 $ git rm --cached file_2.txt
 ```
 
 Verify by checking that `ls` still shows both files, and that `git status` shows that `file_2.txt` is no longer tracked.
 
+```console
+$ ls
+
+file_1.txt file_2.txt
+
+$ git status
+
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    file_2.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        file_2.txt
+```
+
 ### Step 2: `filter-repo`
 
 With `file_2.txt` unstaged, apply `filter-repo` like this to delete `file_2.txt` from the history:
 
-```bash
+```console
 $ git filter-repo --path file_2.txt --invert-paths --force
 ```
 
 The `--path` specifies the path you're trying to target for removal, and the `--invert-paths` is basically the logical negation of the filtering condition, so when it's applied it will _only delete_ `file_2.txt`. When you leave that flag off, you instead _delete everything except_`file_2.txt`. You get only the file, or everything but the file.
 
 The `--force` flag is needed because `filter-repo` expects us to follow best practices by only using it on a fresh clone. 
-In practice, you would commit all your work, get a clean git state, and make a fresh clone of your repo to operate on.
-<!-- todo: find the link I'm thinking of -->
+In practice[^fresh_clone], you would commit all your work, get a clean git state, and make a fresh clone of your repo to operate on with `filter-repo`. 
 
-Now check the files in the git log again:
+Now check the files in the git log and filesystem:
 
-```bash
+```console
+$ ls
+
+file_1.txt file_2.txt
+
 $ git log --name-status --oneline                         
-382b222 (HEAD -> main) Initial commit
+l82b222
+
 A       file_1.txt
 ```
 
-That's it! You might get an error about the repo not being a fresh clone in these examples. If that happens, you can always add `--force` to the commands to ignore that warning (which should be fine for this example,  but in general it's recommended to only `filter-repo` on a fresh clone of a repo; see link )
-<!-- todo: get link -->
+The single commit now does not have any information pertaining to `file_2.txt`, and `file_2.txt` is still around on the filesystem.
+(If you just wanted to delete it completely, you could just skip the detaching step altogether.)
 
-## Bonus: Renaming a directory
-
-I also learned from their manual that `filter-repo` can rename directories in the git history. To rename a folder `foo/` in your repo to `bar/` throughout the whole git commit history, you would use `git filter-repo --path-rename foo:bar`.
-
-```bash
-# here's what my commit history looks like:
-$ git log --name-status --oneline
-7c0f12d (HEAD -> main) Initial commit
-A       file_1.txt
-A       foo/baz_1.txt
-A       foo/baz_2.txt
-
-# Then run the filter-repo path rename
-$ git filter-repo --path-rename foo:bar --force
-
-$ git log --name-status --oneline
-c4770f2 (HEAD -> main) Initial commit
-A       bar/baz_1.txt
-A       bar/baz_2.txt
-A       file_1.txt
-```
+That's all there is to it!
 
 [filter_repo_github]: https://github.com/newren/git-filter-repo
 [filter_repo_github_subsec]: https://github.com/newren/git-filter-repo#why-filter-repo-instead-of-other-alternatives
 [manpage]: https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html
+
+[^fresh_clone]: See [this part of the handbook](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#FRESHCLONE)
+
+[github_filesize_caps]: https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github
