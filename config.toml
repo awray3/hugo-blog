@@ -7,6 +7,10 @@ copyright = "&copy; 2022. All rights reserved."
 canonifyurls = true
 paginate = 10
 
+[markup]
+  [markup.highlight]
+    style = 'manni'
+
 [indexes]
   tag = "tags"
   topic = "topics"
@@ -18,13 +22,13 @@ paginate = 10
 #   googleAnalytics = ""
 #   disqus = "Your Disqus shortname"
   # CSS name for highlight.js
-  highlightjs = "androidstudio"
-  highlightjs_extra_languages = ["yaml"]
+  # highlightjs = "androidstudio"
+  # highlightjs_extra_languages = ["yaml"]
   # dateFormat = "02 Jan 2006 , 15:04"
   dateFormat = "02 Jan 2006"
   # Include any custom CSS and/or JS files
   # (relative to /static folder)
-#   custom_css = ["css/my.css"]
+  custom_css = ["css/my.css"]
 #   custom_js = ["js/my.js"]
 
 [menu]
