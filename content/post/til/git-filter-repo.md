@@ -1,7 +1,7 @@
 ---
 title: "How to Alter Git Histories"
 date: 2022-11-12T16:36:25-08:00
-draft: true
+draft: false
 tags:
     - git
     - TIL
