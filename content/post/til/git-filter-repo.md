@@ -12,7 +12,7 @@ I recently cleaned a couple of git repos that had large data files committed ear
 
 There are many reasons you might need to modify your git history. For example, consider a local repo you want to push to Github that at some point in time had a file larger than [their 100MB cap][github_filesize_caps] committed. 
 In order to push to Github, you would need to not only remove the file from your repo with `git rm`, but also remove the file from _any commit_ it showed up in.
-Another common scenario: you want to purge your git history of any accidentally tracked junk files, such as `__paycache__` folders or `.DS_Store` files.
+Another common scenario: you want to purge your git history of any accidentally tracked junk files, such as `__pycache__` folders or `.DS_Store` files.
 
 In both scenarios, the goal becomes to completely rid a file (or directory) from the git history.
 
@@ -24,7 +24,7 @@ For that reason I won't describe how to use it here.
 
 ## Enter `git filter-repo`
 
-People have since built other tools for performing git history manipulations, and the best one I've found is [git-filter-repo][filter_repo_github]. I picked it after having been convinced by their [comparisons to other tools][filter_repo_github_subsec] this area.
+People have since built simpler, more effective tools for performing git history manipulations, and the best one I've found is [git-filter-repo][filter_repo_github]. I picked it after having been convinced by their [comparisons to other tools][filter_repo_github_subsec] in this area.
 They cover many use cases in their [handbook][manpage], which is worth at least glancing over.
 
 ## Example: Removing files from the git history
@@ -86,7 +86,7 @@ With `file_2.txt` unstaged, apply `filter-repo` like this to delete `file_2.txt`
 $ git filter-repo --path file_2.txt --invert-paths --force
 ```
 
-The `--path` specifies the path you're trying to target for removal, and the `--invert-paths` is basically the logical negation of the filtering condition, so when it's applied it will _only delete_ `file_2.txt`. When you leave that flag off, you instead _delete everything except_`file_2.txt`. You get only the file, or everything but the file.
+The `--path` specifies the path you're trying to target for removal, and the `--invert-paths` is basically the logical negation of the filtering condition, so when it's applied it will _only delete_ `file_2.txt`. When you leave that flag off, you instead _delete everything except_ `file_2.txt`. You get only the file, or everything but the file.
 
 The `--force` flag is needed because `filter-repo` expects us to follow best practices by only using it on a fresh clone. 
 In practice[^fresh_clone], you would commit all your work, get a clean git state, and make a fresh clone of your repo to operate on with `filter-repo`. 
